@@ -15,11 +15,11 @@ async def wait_random(max_delay: int = 10) -> float:
         float: _description_
     """
     start = time.perf_counter()
-    i = random.randint(0, max_delay)
+    i = random.uniform(0, max_delay)
     await asyncio.sleep(i)
     time_elapsed = time.perf_counter() - start
 
-    return f'{time_elapsed:0.15f}'
+    return f'{time_elapsed}'
 
 
 print(asyncio.run(wait_random()))
