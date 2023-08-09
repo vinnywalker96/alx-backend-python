@@ -20,8 +20,3 @@ async def wait_random(max_delay: int = 10) -> float:
     time_elapsed = time.perf_counter() - start
 
     return f'{time_elapsed}'
-
-
-print(asyncio.run(wait_random()))
-print(asyncio.run(wait_random(5)))
-print(asyncio.run(wait_random(15)))
