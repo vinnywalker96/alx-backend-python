@@ -2,7 +2,6 @@
 """Basic async"""
 import asyncio
 import random
-import time
 
 
 async def wait_random(max_delay: int = 10) -> float:
@@ -14,9 +13,6 @@ async def wait_random(max_delay: int = 10) -> float:
     Returns:
         float: _description_
     """
-    start = time.perf_counter()
-    i = random.uniform(0, max_delay)
-    await asyncio.sleep(i)
-    time_elapsed = time.perf_counter() - start
-
-    return f'{time_elapsed}'
+    delay = random.uniform(0, max_delay)
+    await asyncio.sleep(delay)
+    return f'{delay}'
