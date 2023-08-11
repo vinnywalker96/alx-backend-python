@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Async Generator"""
 import asyncio
-from typing import Generator
+from typing import AsyncGenerator
 import random
 
 
-async def async_generator() -> Generator[int, None, float]:
+async def async_generator() -> AsyncGenerator[float, None]:
     """_summary_
 
     Returns:
@@ -14,7 +14,7 @@ async def async_generator() -> Generator[int, None, float]:
     Yields:
         Iterator[float]: _description_
     """
-    for i in range(10):
+    for _ in range(10):
         await asyncio.sleep(1)
-        delay = random.uniform(0, i)
+        delay = random.uniform(0, 10)
         yield delay
