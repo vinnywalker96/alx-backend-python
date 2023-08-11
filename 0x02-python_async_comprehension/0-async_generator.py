@@ -14,7 +14,7 @@ async def async_generator() -> Generator[int, None, float]:
     Yields:
         Iterator[float]: _description_
     """
-    for _ in range(10):
+    for i in range(10):
         await asyncio.sleep(1)
-        delay = random.uniform(0, 10)
+        delay = random.uniform(0, i)
         yield delay
