@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Parameterize a unit test"""
 import unittest
-from utils import access_nested_map
+from utils import ( 
+        access_nested_map,
+        get_json
+        )
+from unittest.mock import patch, Mock
 from parameterized import parameterized
 from typing import (
         Mapping,
@@ -33,6 +37,16 @@ class TestAccessNestedMap(unittest.TestCase):
                     access_nested_map(
                         nested_map, path), expected)
 
+
+class TestGetJson(unittest.TestCase):
+    """Moct HTTP calls class"""
+    @patch("requests.get")
+    def test_get_json(self, mock_get):
+        """Test requests"""
+        mock_get.return_value.json.return_value = {"payload": True}
+        result = get_json("http://example.com")
+        self.assertEqual(result, {"payload": True})
+        mock_get.assert_called_once("http://example.com")
 
 if __name__ == "__main__":
     unittest.main() 
