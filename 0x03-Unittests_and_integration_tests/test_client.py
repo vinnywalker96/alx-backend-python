@@ -2,8 +2,14 @@
 """Parameterize and patch as decorators"""
 import unittest
 from parameterized import parameterized
-from unittest.mock import patch, Mock, MagicMock
+from unittest.mock import (
+        patch,
+        Mock,
+        MagicMock,
+        PropertyMock
+        )
 from client import GithubOrgClient
+from typing import Dict
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -25,6 +31,20 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(org_client.org(), response)
         mock_data.assert_called_once_with(
                 f"https://api.github.com/orgs/{org}")
+
+    def test_public_repos_url(self) -> None:
+        """Tests the `_public_repos_url` property."""
+        with patch(
+                "client.GithubOrgClient.org",
+                new_callable=PropertyMock,
+                ) as mock_org:
+            mock_org.return_value = {
+                'repos_url': "https://api.github.com/users/google/repos",
+            }
+            self.assertEqual(
+                GithubOrgClient("google")._public_repos_url,
+                "https://api.github.com/users/google/repos",
+            )
 
 
 if __name__ == "__main__":
