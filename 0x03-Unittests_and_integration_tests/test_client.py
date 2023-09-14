@@ -42,7 +42,7 @@ class TestGithubOrgClient(unittest.TestCase):
                 'repos_url': "https://api.github.com/users/google/repos",
             }
             self.assertEqual(
-                GithubOrgClient("google")._public_repos_url,
+                GithubOrgClient("google").public_repos_url,
                 "https://api.github.com/users/google/repos",
             )
 
@@ -51,42 +51,19 @@ class TestGithubOrgClient(unittest.TestCase):
         """Tests the `public_repos` method."""
         test_payload = {
                 'repos_url': 'https://api.github.com/orgs/google/repos',
-                'repo': [
+                'repos': [
                     {
-                        'login': 'google',
-                        'id': 1342004,
-                    },
-                    {
-                        'node_id': 'MDEyOk9yZ2FuaXphdGlvbjEzNDIwMDQ=',
-                        'url': 'https://api.github.com/orgs/google',
-                        'repos_url': 'https://api.github.com/orgs/google/repos',
-                        'events_url': 'https://api.github.com/orgs/google/events',
-                        'hooks_url': 'https://api.github.com/orgs/google/hooks',
-                        'issues_url': 'https://api.github.com/orgs/google/issues',
-                        'members_url': 'https://api.github.com/orgs/google/members{/member}',
-                    },
-                    {
-                        'name': 'Google',
-                        'company': None,
-                        'blog': 'https://opensource.google/',
-                        'location': None,
-                        'email': 'opensource@google.com',
-                        'twitter_username': 'GoogleOSS',
-                        'is_verified': True,
-                        'has_organization_projects': True,
-                        'has_repository_projects': True,
-                        'public_repos': 2552,
-                        'public_gists': 0,
-                        'followers': 28884,
-                        'following': 0,
-                        'html_url': 'https://github.com/google',
-                        'created_at': '2012-01-18T01:30:18Z',
-                        'updated_at': '2021-12-30T01:40:20Z',
-                        'archived_at': None,
-                        'type': 'Organization'
-                    },
-                ]}
-        mock_get_json.return_value = test_payload["repo"]
+                        "id": 23455,
+                        "name": "test",
+                        "private": False,
+                        "owner": "Google"
+                    }
+                ]
+                
+               }
+        mock_get_json.return_value = test_payload[
+            "repos"
+            ]
         with patch(
                 "client.GithubOrgClient._public_repos_url",
                 new_callable=PropertyMock,
@@ -103,8 +80,8 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_get_json.assert_called_once()
 
     @parameterized.expand([
-        ({"license": {"key": "my_license"}}, "my_license"),
-        ({"license": {"key": "other_license"}}, "my_license")
+        ({'license': {'key': "bsd-3-clause"}}, "bsd-3-clause", True),
+        ({'license': {'key': "bsl-1.0"}}, "bsd-3-clause", False),
     ])
     def test_has_license(self, repo: Dict, key: str, expected: bool):
         """Test if repo has licence"""
