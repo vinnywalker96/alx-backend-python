@@ -66,7 +66,7 @@ class TestGithubOrgClient(unittest.TestCase):
                         "owner": "Google"
                     }
                 ]
-                
+
                }
         mock_get_json.return_value = test_payload[
             "repos"
@@ -95,6 +95,7 @@ class TestGithubOrgClient(unittest.TestCase):
         org_client = GithubOrgClient("google")
         has_licence = org_client.has_license(repo, key)
         self.assertEqual(has_licence, expected)
+
 
 @parameterized_class([
     {
@@ -411,6 +412,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             GithubOrgClient("google").public_repos(license="apache-2.0"),
             self.apache2_repos,
         )
+
     @classmethod
     def tearDownClass(cls) -> None:
         """Removes the class fixtures after running all tests."""
